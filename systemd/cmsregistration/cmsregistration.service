@@ -1,0 +1,15 @@
+# Configuration for systems using systemd, starting from Ubuntu 15.10
+# author: Cristian Consonni (cristian.consonni@unitn.it)
+
+[Unit]
+Description=uWSGI instance to serve cmsregistration
+After=network.target
+
+[Service]
+User=cms
+Group=www-data
+WorkingDirectory=/data/nginx/cmsregistration/
+ExecStart=/data/nginx/cmsregistration/cmsregistration_env/bin/uwsgi --ini cmsregistration.ini
+
+[Install]
+WantedBy=multi-user.target
