@@ -13,18 +13,18 @@ if pgrep "$DAEMON_NAME" >/dev/null; then
 fi
 
 # cleanup ranking cache
-rm -rf /var/local/cache/cms/*
+rm -rf /var/local/{lib,cache}/cms/*
 
 # create rundir
 mkdir -p "${RUNDIR}/"
+touch "${RUNDIR}/cms.pid"
 
 su -c "${SCRIPTSDIR}/start_cms.sh $(cat "$CMS_HOME/contest_id")" cms
 
-i=1
-while [[ "$i" -le "$PRESTART_NRETRIES" ]] && [[ ! -s "${RUNDIR}/cms.pid" ]]; do
-  pgrep "$DAEMON_NAME" > "${RUNDIR}/cms.pid" || true
-  sleep "$PRESTART_WAIT_RETRY"
-  i=$((i+1))
+while [[ ! -s "${RUNDIR}/cms.pid" ]]; do
+  if pgrep "$DAEMON_NAME"; then
+    pgrep "$DAEMON_NAME" > "${RUNDIR}/cms.pid"
+  fi
 done
 
 timestamp="$(date '+%Y-%m-%dT%H:%M:%SZ')"

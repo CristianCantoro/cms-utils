@@ -8,9 +8,14 @@ fi
 
 source '/usr/share/cms/cms_service_env.sh'
 
-sleep "${MAIN_WAIT}"
+wait=0;
+while [[ ! -s "${RUNDIR}/cms.pid" ]] && [[ "$wait" -le "$MAIN_WAIT" ]]; do
+  sleep 1
+  wait=$((wait+1))
+done
+
 while kill -0 "$(cat "${RUNDIR}/cms.pid")"; do
-    sleep 1
+  sleep 1
 done
 
 exit 1
