@@ -9,7 +9,7 @@ if pgrep "$DAEMON_NAME" >/dev/null; then
 fi
 
 # cleanup ranking cache
-rm -rf /var/local/{lib,log,cache}/cms/*
+rm -rf /var/local/cache/cms/*
 
 # create rundir
 mkdir -p "${RUNDIR}/"
